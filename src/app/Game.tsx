@@ -15,8 +15,10 @@ const MultiplicationGame = () => {
 
   const generateProblem = () => {
     setNum1(Math.floor(Math.random() * 90) + 10); // 1-2 digit number
+    // setNum1(Math.floor(Math.random() * 9) + 1); // 1-2 digit number
     // setNum2(Math.floor(Math.random() * 90) + 10); // 1-2 digit number
-    setNum2(Math.floor(Math.random() * 9) + 1); // 1 digit number
+    // setNum2(Math.floor(Math.random() * 9) + 1); // 1 digit number
+    setNum2(9);
   };
 
   useEffect(() => {
@@ -29,7 +31,9 @@ const MultiplicationGame = () => {
 
   const handleSubmit = (event) => {
     event.preventDefault();
-    if (parseInt(userInput) === num1 * num2) {
+    const answer = parseInt(userInput.split("").reverse().join(""));
+    console.log(answer, num1 * num2);
+    if (answer === num1 * num2) {
       setFeedback("Correct!");
       sound.play();
       generateProblem();
@@ -41,12 +45,18 @@ const MultiplicationGame = () => {
 
   return (
     <div>
-      <p>
-        Multiply these numbers: {num1} x {num2}
+      <p className="text-xl text-right">
+        {num1}
+        <br />x {num2}
       </p>
       <form onSubmit={handleSubmit} className="text-black">
-        <input type="text" value={userInput} onChange={handleInput} />
-        <button type="submit">Submit</button>
+        <input
+          type="text"
+          value={userInput}
+          onChange={handleInput}
+          dir="rtl"
+          className="override"
+        />
       </form>
       <p>{feedback}</p>
     </div>
