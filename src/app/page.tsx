@@ -20,9 +20,13 @@ function MenuItem({
 export default function Home() {
   return (
     <main className="flex min-h-screen flex-col items-center justify-between p-24">
-      <div className="z-10 max-w-5xl w-full items-center justify-center font-mono text-sm lg:flex">
+      <div className="z-10 max-w-xl w-full items-center justify-center font-mono text-sm lg:flex">
         <div>
-          <h1 className="text-2xl text-center">Fast Math Game</h1>
+          <h1 className="text-3xl text-center">Fast Math Game</h1>
+          <p className="text-l text-center mt-4">
+            Learn to calculate quickly in your head by thinking problems through
+            from right to left. Progress through the levels at your own pace.
+          </p>
           {Object.entries(levels).map(([key, level]) => (
             <MenuItem description={level.description} level={key} key={key} />
           ))}
