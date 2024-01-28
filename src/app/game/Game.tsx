@@ -8,11 +8,8 @@ import {
   ChangeEvent,
 } from "react";
 import { levels } from "@/app/levels";
-import { Howl } from "howler";
-
-const sound = new Howl({
-  src: ["/celebrate.wav"],
-});
+import { celebrate } from "@/lib/celebrate";
+import Link from "next/link";
 
 const calculateAnswer = (num1: number, num2: number, operator: string) => {
   switch (operator) {
@@ -20,7 +17,7 @@ const calculateAnswer = (num1: number, num2: number, operator: string) => {
       return num1 + num2;
     case "-":
       return num1 - num2;
-    case "x":
+    case "*":
       return num1 * num2;
     case "/":
       return num1 / num2;
@@ -28,14 +25,14 @@ const calculateAnswer = (num1: number, num2: number, operator: string) => {
   return 0;
 };
 
-const MultiplicationGame = ({ levelNum }: { levelNum: number }) => {
+const MultiplicationGame = ({ levelId }: { levelId: string }) => {
   const [num1, setNum1] = useState(0);
   const [num2, setNum2] = useState(0);
-  const [operator, setOperator] = useState("+"); // ["+", "-", "x", "/"]
+  const [operator, setOperator] = useState("+"); // ["+", "-", "*", "/"]
   const [answer, setAnswer] = useState(0);
   const [userInput, setUserInput] = useState("");
   const [feedback, setFeedback] = useState("");
-  const level = levels[levelNum];
+  const level = levels[levelId];
 
   const generateProblem = useCallback(() => {
     const num1 = level.generator.num1();
@@ -62,7 +59,7 @@ const MultiplicationGame = ({ levelNum }: { levelNum: number }) => {
       console.log(answer, userAnswer);
       if (answer === userAnswer) {
         setFeedback("Correct!");
-        sound.play();
+        celebrate();
         generateProblem();
       } else {
         setFeedback("Try again!");
@@ -73,25 +70,34 @@ const MultiplicationGame = ({ levelNum }: { levelNum: number }) => {
   );
 
   return (
-    <div>
-      <p className="text-xl text-right">
-        {num1}
-        <br />
-        {operator} {num2}
-      </p>
-      <form onSubmit={handleSubmit} className="text-black">
-        <input
-          type="text"
-          value={userInput}
-          onChange={handleInput}
-          dir="rtl"
-          className="override"
-          // biome-ignore lint/a11y/noAutofocus: <explanation>
-          autoFocus={true}
-        />
-      </form>
-      <p>{feedback}</p>
-    </div>
+    <>
+      <div className="font-mono flex flex-col">
+        <div className="text-xl text-right flex flex-row justify-end">
+          <div className="mr-4">
+            <br />
+            {`${operator} `}
+          </div>
+          <div>
+            {num1}
+            <br />
+            {num2}
+          </div>
+        </div>
+        <form onSubmit={handleSubmit} className="text-black">
+          <input
+            type="text"
+            value={userInput}
+            onChange={handleInput}
+            dir="rtl"
+            className="override text-xl outline-none"
+            // biome-ignore lint/a11y/noAutofocus: <explanation>
+            autoFocus={true}
+          />
+        </form>
+        <p className="mt-2 text-xl">{feedback}</p>
+        <p className="w-60 mt-6">{level.hint}</p>
+      </div>
+    </>
   );
 };
 

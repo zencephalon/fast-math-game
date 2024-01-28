@@ -6,14 +6,12 @@ function MenuItem({
   level,
 }: {
   description: string;
-  level: number;
+  level: string;
 }) {
   return (
     <Link href={`/game/${level}`}>
       <div className="text-xl mt-4 p-2 hover:bg-sky-700 pointer">
-        <h2>
-          Level {level}: {description}
-        </h2>
+        <h2>{description}</h2>
       </div>
     </Link>
   );
@@ -25,12 +23,8 @@ export default function Home() {
       <div className="z-10 max-w-5xl w-full items-center justify-center font-mono text-sm lg:flex">
         <div>
           <h1 className="text-2xl text-center">Fast Math Game</h1>
-          {levels.map((level) => (
-            <MenuItem
-              description={level.description}
-              level={level.level}
-              key={level.level}
-            />
+          {Object.entries(levels).map(([key, level]) => (
+            <MenuItem description={level.description} level={key} key={key} />
           ))}
         </div>
       </div>
